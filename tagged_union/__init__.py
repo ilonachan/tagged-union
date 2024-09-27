@@ -118,6 +118,9 @@ def tagged_union(cls):
 
             return rep
 
+        def __call__(self):
+            return self.args
+
         def __eq__(self, other):
             return (self.name, self.args) == (other.name, other.args)
 
@@ -149,6 +152,11 @@ def tagged_union(cls):
             assert next(gen_types) == Unit
 
             return TaggedUnionMember(self._name, args)
+
+        def __contains__(self, other):
+            if not isinstance(other, TaggedUnionMember):
+                return False
+            return other.name == self._name
 
         def __eq__(self, other):
             return other == self._name
